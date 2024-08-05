@@ -1,5 +1,5 @@
-#Build 
-FROM node:18-alphine AS build 
+# Build Stage
+FROM node:18-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -11,8 +11,8 @@ COPY . .
 
 RUN yarn build
 
-#Prod Stage
-FROM node:18-alphine 
+# Production Stage
+FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
@@ -23,10 +23,10 @@ COPY --from=build /usr/src/app/dist ./dist
 
 COPY package*.json ./
 
-RUN yarn --only=production
+RUN yarn install --production
 
 RUN rm package*.json
 
 EXPOSE 3000
 
-CMD [ "node", "dist/main.js" ]
+CMD ["node", "dist/main.js"]
